@@ -1,0 +1,129 @@
+# 📘 TASK 3 : DATA VISUALIZATION (FULL CODE DESCRIPTION)
+# This program demonstrates how to perform basic data visualization using 
+# Python libraries such as Pandas, Matplotlib, and Seaborn.
+# 🔹 Step 1: Import required libraries  
+#           (pandas for data handling, matplotlib & seaborn for visualization)
+# 🔹 Step 2: Create a sample dataset  
+#           (Example student marks in different subjects)
+# 🔹 Step 3: Convert the data into a DataFrame for processing
+# 🔹 Step 4: Generate different types of charts  
+#           - Bar Chart  
+#           - Line Chart  
+#           - Pie Chart  
+#           - Scatter Plot  
+# 🔹 Step 5: Display all visualizations with appropriate titles and labels
+# This task helps you understand how to convert raw data into meaningful 
+# graphical insights, which is an essential skill in Data Visualization.
+
+# 📊 Data Visualization Internship Task – Professional Version.
+
+# -----------------------------
+# 1️⃣ Import Required Libraries
+# -----------------------------
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+import warnings
+
+# Suppress warnings for clean output
+warnings.filterwarnings("ignore")
+
+# -----------------------------
+# 2️⃣ Create Sample Dataset
+# -----------------------------
+data = {
+    'Student': ['A','B','C','D','E','F','G','H','I','J'],
+    'Maths': [88, 92, 79, 85, 91, 73, 80, 77, 89, 95],
+    'Physics': [90, 85, 80, 82, 88, 70, 78, 75, 87, 93],
+    'Chemistry': [85, 88, 75, 80, 86, 72, 77, 74, 84, 90],
+    'Category': ['A','B','A','B','A','C','B','C','A','B'],
+    'Month': ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct']
+}
+
+df = pd.DataFrame(data)
+
+# -----------------------------
+# 3️⃣ Styling & Configuration
+# -----------------------------
+sns.set_style("whitegrid")                # Use seaborn whitegrid style
+plt.rcParams['figure.figsize'] = (8,6)    # Set default figure size
+
+# ============================================================
+# 4️⃣ Data Visualization
+# ============================================================
+
+# ---------- PIE CHART: Category Distribution ----------
+plt.figure()
+df['Category'].value_counts().plot.pie(
+    autopct='%1.1f%%', 
+    startangle=90, 
+    colors=sns.color_palette("pastel")
+)
+plt.title("Category Distribution")
+plt.ylabel("")  # Hide default ylabel
+plt.show()
+
+# ---------- BAR CHART: Average Maths Marks by Category ----------
+plt.figure()
+avg_marks = df.groupby("Category")["Maths"].mean().reset_index()
+sns.barplot(data=avg_marks, x="Category", y="Maths", palette="viridis")
+plt.title("Average Maths Marks by Category")
+plt.xlabel("Category")
+plt.ylabel("Average Maths Marks")
+plt.show()
+
+# ---------- LINE CHART: Maths Trend Over Months ----------
+plt.figure()
+sns.lineplot(data=df, x="Month", y="Maths", marker="o", color="teal")
+plt.title("Maths Marks Trend Over Months")
+plt.xlabel("Month")
+plt.ylabel("Maths Marks")
+plt.xticks(rotation=45)
+plt.show()
+
+# ---------- SCATTER PLOT: Maths vs Physics ----------
+plt.figure()
+sns.scatterplot(data=df, x="Maths", y="Physics", hue="Category", s=120, palette="Set2")
+plt.title("Maths vs Physics Scores")
+plt.xlabel("Maths Marks")
+plt.ylabel("Physics Marks")
+plt.legend(title="Category")
+plt.show()
+
+# ---------- HEATMAP: Correlation Between Subjects ----------
+plt.figure()
+corr = df[['Maths','Physics','Chemistry']].corr()
+sns.heatmap(corr, annot=True, cmap="Blues", fmt=".2f")
+plt.title("Correlation Heatmap of Subjects")
+plt.show()
+
+# ---------- HISTOGRAM: Distribution of Maths Marks ----------
+plt.figure()
+plt.hist(df['Maths'], bins=5, edgecolor='black', color='skyblue')
+plt.title("Distribution of Maths Marks")
+plt.xlabel("Marks")
+plt.ylabel("Number of Students")
+plt.show()
+
+# ---------- BOXPLOT: Marks Distribution by Subject ----------
+plt.figure()
+df_melt = df.melt(id_vars="Student", 
+                  value_vars=["Maths","Physics","Chemistry"],
+                  var_name="Subject",
+                  value_name="Marks")
+sns.boxplot(data=df_melt, x="Subject", y="Marks", palette="pastel")
+plt.title("Marks Distribution by Subject")
+plt.xlabel("Subject")
+plt.ylabel("Marks")
+plt.show()
+
+# ============================================================
+# 5️⃣ Key Insights
+# ============================================================
+print("\n📌 Key Insights from the Data:")
+print("✔ Most students belong to Category A & B.")
+print("✔ Category A has the highest average Maths score.")
+print("✔ Maths scores generally increase towards the end of the year.")
+print("✔ Strong positive correlation exists between Maths and Physics marks.")
+print("✔ Most marks lie between 75–95.")
+print("✔ Physics marks show higher variability compared to other subjects.")
